@@ -4,9 +4,10 @@ import {
   selectError,
   selectVisibleContacts,
 } from 'redux/selectors';
-import { List } from './styled';
 import { useEffect } from 'react';
 import { fetchContacts } from 'redux/operations';
+import { FaSpinner } from 'react-icons/fa';
+import { List } from './styled';
 import { ContactsListItem } from 'components/ContactsListItem';
 
 export const ContactList = () => {
@@ -21,8 +22,9 @@ export const ContactList = () => {
 
   return (
     <>
-      {isLoading && !error && <b>Request in progress...</b>}
+      {error && <h1>ooops, smth went wrong :(</h1>}
       <List>
+        {isLoading && !error && <FaSpinner size={24} className="spin" />}
         {contacts.map(item => {
           return <ContactsListItem item={item} key={item.id} />;
         })}

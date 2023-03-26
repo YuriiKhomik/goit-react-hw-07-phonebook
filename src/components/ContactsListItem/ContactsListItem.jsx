@@ -1,8 +1,8 @@
 import React from 'react';
-import { Box } from 'components/Box';
 import { useDispatch } from 'react-redux';
-import { Contact } from 'components/ContactList/styled';
 import { deleteContact } from 'redux/operations';
+import { Box } from 'components/Box';
+import { Contact } from 'components/ContactList/styled';
 
 export const ContactsListItem = ({ item }) => {
   const dispatch = useDispatch();
