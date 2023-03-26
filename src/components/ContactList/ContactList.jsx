@@ -1,46 +1,33 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { getContacts, deleteContact } from 'redux/contactsSlice';
-import { getFilter } from 'redux/filterSlice';
-import { List, Contact } from './styled';
-import { Box } from 'components/Box';
+import { getContacts, getIsLoading, getError } from 'redux/selectors';
+import { getFilter } from 'redux/selectors';
+import { List } from './styled';
 import { useEffect } from 'react';
 import { fetchContacts } from 'redux/operations';
+import { ContactsListItem } from 'components/ContactsListItem';
 
 export const ContactList = () => {
   const dispatch = useDispatch();
+  const contacts = useSelector(getContacts);
+  const isLoading = useSelector(getIsLoading);
+  const error = useSelector(getError);
+  const filter = useSelector(getFilter);
+  const visibleContacts = contacts.filter(contact =>
+    contact.name.toLowerCase().includes(filter.toLowerCase())
+  );
 
-  const { items, isLoading, error } = useSelector(getContacts);
   useEffect(() => {
     dispatch(fetchContacts());
   }, [dispatch]);
 
-  // return (
-  //   <div>
-  //     {isLoading && <b>Loading tasks...</b>}
-  //     {error && <b>{error}</b>}
-  //     <p>{items.length > 0 && JSON.stringify(items, null, 2)}</p>
-  //   </div>
-  // );
-  // const filter = useSelector(getFilter);
-
-  // const visibleContacts = items.filter(contact =>
-  //   contact.name.toLowerCase().includes(filter.toLowerCase())
-  // );
-
-  // return (
-  //   <List>
-  //     {visibleContacts.map(({ id, name, phone }) => {
-  //       return (
-  //         <li key={id}>
-  //           <Box display="flex" alignItems="center">
-  //             <Contact>
-  //               {name}: {phone}
-  //             </Contact>
-  //             <button type="button">Delete</button>
-  //           </Box>
-  //         </li>
-  //       );
-  //     })}
-  //   </List>
-  // );
+  return (
+    <>
+      {isLoading && !error && <b>Request in progress...</b>}
+      <List>
+        {visibleContacts.map(item => {
+          return <ContactsListItem item={item} key={item.id} />;
+        })}
+      </List>
+    </>
+  );
 };

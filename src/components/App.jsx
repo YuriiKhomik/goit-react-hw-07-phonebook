@@ -2,7 +2,6 @@ import { PhonebookForm } from './PhonebookForm';
 import { ContactList } from './ContactList';
 import { Box } from './Box';
 import { Filter } from './Filter';
-import { fetchContacts } from 'redux/operations';
 
 export function App() {
   return (
